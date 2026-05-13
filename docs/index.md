@@ -17,3 +17,5 @@ WikiNest is a lightweight wiki that lives entirely in your GitHub repository. No
 4. Click **Edit** on any page to modify it
 
 See [Installation](setup/installation) for detailed setup instructions, or [Markdown reference](reference/markdown) to see all supported formatting.
+
+Updating document is available in real-time browser
