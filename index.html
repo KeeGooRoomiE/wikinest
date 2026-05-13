@@ -513,10 +513,11 @@ async function createPage(){
   try{
     await apiPutFile(fullPath,`docs: create ${fullPath}`,b64enc(content),null);
     closeModal();
-    toast(t('saved'));
-    await loadTree();
-    const page={path,title,parts:path.split('/'),excerpt:''};
+    const page={path,title,parts:path.split('/'),excerpt:'',folder_titles:{}};
+    tree.push(page);
+    renderTree(tree);
     openPage(page);
+    watchDeploy();
   }catch(e){toast(`${t('error_save')}: ${e.message}`);}
 }
 
@@ -537,6 +538,7 @@ async function doDelete(){
   try{
     const meta=await apiGetFile(currentPath);
     await apiDeleteFile(currentPath,`docs: delete ${currentPath}`,meta.sha);
+    const deletedRel=currentPath.replace('docs/','').replace(/\.md$/,'');
     currentPath=null; currentSha=null; originalContent=null; editorDirty=false;
     $('panels').classList.remove('split');
     $('view-wrap').style.display='none';
@@ -547,6 +549,8 @@ async function doDelete(){
     $('edit-btns').style.display='none';
     $('breadcrumb').innerHTML='';
     $('toc').style.display='none';
+    tree=tree.filter(p=>p.path!==deletedRel);
+    renderTree(tree);
     showEmpty();
     watchDeploy();
   }catch(e){toast(`Error: ${e.message}`);}
@@ -582,6 +586,13 @@ async function doRename(){
     const content=b64dec(oldData.content.replace(/\n/g,''));
     await apiPutFile(newPath,`docs: rename ${oldPath} → ${newPath}`,b64enc(content),null);
     await apiDeleteFile(oldPath,`docs: rename ${oldPath} → ${newPath}`,oldData.sha);
+    const oldRel=oldPath.replace('docs/','').replace(/\.md$/,'');
+    const parts=newRel.split('/');
+    const title=parts[parts.length-1].replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const renamedPage={path:newRel,title,parts,excerpt:'',folder_titles:{}};
+    tree=tree.filter(p=>p.path!==oldRel);
+    tree.push(renamedPage);
+    renderTree(tree);
     currentPath=null; currentSha=null; originalContent=null; editorDirty=false;
     $('panels').classList.remove('split');
     $('view-wrap').style.display='none';
@@ -592,10 +603,7 @@ async function doRename(){
     $('toc').style.display='none';
     showEmpty();
     toast(t('saved'));
-    await loadTree();
-    const parts=newRel.split('/');
-    const title=parts[parts.length-1].replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    openPage({path:newRel,title,parts,excerpt:''});
+    openPage(renamedPage);
     watchDeploy();
   }catch(e){toast(`Error: ${e.message}`);}
 }
