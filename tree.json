@@ -23,6 +23,19 @@
     "updated_at": "2026-05-13T23:30:48+07:00"
   },
   {
+    "path": "example/new_example",
+    "title": "New_example",
+    "excerpt": "Start writing here.",
+    "parts": [
+      "example",
+      "new_example"
+    ],
+    "folder_titles": {
+      "example": "Example"
+    },
+    "updated_at": "2026-05-13T23:31:17+07:00"
+  },
+  {
     "path": "reference/folder-structure",
     "title": "Folder structure",
     "excerpt": "Pages in WikiNest map directly to files in the `docs/` directory. The sidebar tree mirrors the directory structure.",
