@@ -311,9 +311,11 @@ async function openPage(page){
   cancelEdit();
 
   try{
-    const data=await ghFetch(`contents/${currentPath}`);
-    currentSha=data.sha;
-    const md=b64dec(data.content.replace(/\n/g,''));
+    const rawUrl=`https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/HEAD/${currentPath}`;
+    const r=await fetch(rawUrl,{cache:'no-cache'});
+    if(!r.ok) throw new Error(r.statusText);
+    const md=await r.text();
+    currentSha=null;
     renderView(md);
   }catch(e){
     $('view').innerHTML=`<p style="color:var(--text2)">${t('error_load')}: ${e.message}</p>`;
