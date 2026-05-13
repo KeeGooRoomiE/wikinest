@@ -6,7 +6,21 @@
     "parts": [
       "index"
     ],
-    "folder_titles": {}
+    "folder_titles": {},
+    "updated_at": "2026-05-13T12:55:24+07:00"
+  },
+  {
+    "path": "example/example_page",
+    "title": "Example_page",
+    "excerpt": "Start writing here.",
+    "parts": [
+      "example",
+      "example_page"
+    ],
+    "folder_titles": {
+      "example": "Example"
+    },
+    "updated_at": "2026-05-13T19:56:02+07:00"
   },
   {
     "path": "reference/folder-structure",
@@ -18,7 +32,8 @@
     ],
     "folder_titles": {
       "reference": "Reference"
-    }
+    },
+    "updated_at": "2026-05-13T12:34:34+07:00"
   },
   {
     "path": "reference/i18n",
@@ -30,7 +45,8 @@
     ],
     "folder_titles": {
       "reference": "Reference"
-    }
+    },
+    "updated_at": "2026-05-13T12:34:34+07:00"
   },
   {
     "path": "reference/markdown",
@@ -42,7 +58,8 @@
     ],
     "folder_titles": {
       "reference": "Reference"
-    }
+    },
+    "updated_at": "2026-05-13T12:34:34+07:00"
   },
   {
     "path": "setup/configuration",
@@ -54,7 +71,8 @@
     ],
     "folder_titles": {
       "setup": "Setup & Installation"
-    }
+    },
+    "updated_at": "2026-05-13T12:34:34+07:00"
   },
   {
     "path": "setup/installation",
@@ -66,6 +84,7 @@
     ],
     "folder_titles": {
       "setup": "Setup & Installation"
-    }
+    },
+    "updated_at": "2026-05-13T12:34:34+07:00"
   }
 ]
