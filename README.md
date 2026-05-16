@@ -16,6 +16,17 @@ The entire frontend is one `index.html` and one `style.css`. No `npm install`. N
 
 ---
 
+## What WikiNest is not
+
+* **Not a CMS** — no admin panel, no content types, no database
+* **Not a static site generator** — no build step, no npm, no local toolchain
+* **Not a wiki engine** — no server, no plugins, no self-hosted infra
+* **Not Notion** — your content stays in a Git repo you own, not in someone's SaaS
+
+WikiNest is a thin editing layer over the Git provider API. Your repository is the backend.
+
+---
+
 ## Why not another wiki?
 
 Most team documentation tools eventually become infrastructure.
