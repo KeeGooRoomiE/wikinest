@@ -484,7 +484,11 @@ async function loadTree(){
     if(!r.ok) throw new Error();
     tree=await r.json();
     renderTree(tree);
-    if(!currentPath) showEmpty();
+    if(!currentPath){
+      const homePage=tree.find(p=>p.path==='home');
+      if(homePage) openPage(homePage);
+      else showEmpty();
+    }
   }catch{
     $('tree').innerHTML=`<div style="padding:12px;font-size:12px;color:var(--text2)">${t('error_load')}</div>`;
   }

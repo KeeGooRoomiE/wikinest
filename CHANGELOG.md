@@ -9,6 +9,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 ### Navigation
 
 - **Folder display-name rename** — hovering any folder row in the sidebar reveals a pencil button. Clicking it opens a modal with the current display name pre-filled. On save, WikiNest creates or updates `docs/<folder-path>/_meta.json` with `{ "title": "…" }` (1 API call, atomic). The actual folder path and page URLs do not change. The sidebar updates optimistically; CI rebuilds the authoritative tree after deploy
+- **Custom home page** — if `docs/home.md` exists in the tree, it is automatically opened on the first load instead of the empty state / recently-modified list. Create `docs/home.md` in any wiki to set a custom landing page; delete it to revert to the default empty state
 
 ## [1.2.0] — 2026-05-16
 

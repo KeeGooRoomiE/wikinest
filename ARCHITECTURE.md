@@ -71,7 +71,7 @@ WikiNest is a single-page application with no backend. All state lives in a Git 
 ### Read path
 
 1. `init()` loads display prefs from `localStorage`, then fetches `config.json` (same-origin, Pages CDN), sets `cfg.provider`
-2. `loadTree()` calls `rawUrl('tree.json')` → fetches from the provider's raw CDN with `cache: 'no-cache'`
+2. `loadTree()` calls `rawUrl('tree.json')` → fetches from the provider's raw CDN with `cache: 'no-cache'`. After rendering the tree, if no page is currently open: looks for a page with `path === 'home'` (i.e. `docs/home.md`); if found, calls `openPage(homePage)`; otherwise calls `showEmpty()`
 3. `openPage()` calls `rawUrl(currentPath)` → fetches the `.md` file; `renderView()` parses frontmatter then renders via `marked.js`
 4. `ensureSearchIndex()` lazily fetches `search.json` on first search open
 
