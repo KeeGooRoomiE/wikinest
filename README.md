@@ -47,20 +47,40 @@ No backend. No database. Your PAT is encrypted with your password and stored in 
 
 ## Features
 
-- **Split-view editor** — raw markdown on the left, live preview on the right; updates on every keystroke. Ctrl+S / ⌘S saves without leaving the keyboard
-- **Page rename** — rename any page in-place from the toolbar; the tree reloads and navigates to the new path automatically
-- **Anchor links** — TOC items update `location.hash` on click; deep links are shareable
-- **Recently modified** — empty state shows the 5 most recently changed pages, sorted by last commit date
-- **Unsaved changes warning** — browser confirms before closing a tab with pending edits
-- **Tree navigation** — sidebar mirrors the `docs/` folder structure, unlimited nesting
-- **Folder aliases** — custom display names via `_meta.json` without renaming directories
-- **Full-text search** — client-side, ⌘K / Ctrl+K, searches titles and excerpts; results highlighted inline
-- **Password-protected editing** — SHA-256 hash in `config.json`, PAT encrypted in localStorage
-- **Multi-maintainer support** — `config.json` is the source of truth; each editor brings their own PAT
-- **GitHub Actions status** — live deploy badge in the header; post-save watcher polls until deploy completes
-- **i18n** — UI strings in `i18n/<lang>.json`; English and Russian included
-- **Dark mode** — follows `prefers-color-scheme` automatically
-- **Mobile-friendly** — sidebar collapses to hamburger, split-view collapses to editor-only
+### Editor
+- **Split-view editor** — markdown on the left, debounced live preview on the right. Ctrl+S / ⌘S saves without leaving the keyboard
+- **Markdown toolbar** — 16 buttons in 5 groups: bold, italic, strikethrough; H1/H2/H3; blockquote, unordered list, ordered list, task list; inline code, code block; link, image, table, HR. All buttons are selection-aware and toggle-able
+- **Offline drafts** — editor auto-saves to `localStorage` every 500 ms. A yellow banner offers "Restore" or "Discard" on re-open. Drafts survive tab closes and cancelled edits; cleared on successful save
+- **Drag-and-drop image upload** — drop image files onto the editor. Images are committed to `docs/assets/<timestamp>-<filename>` and inserted as `![name](url)` at the cursor
+- **Wiki links `[[Page Name]]`** — auto-links to pages by title or path; broken links render as red strikethrough. Live autocomplete dropdown in the editor after typing `[[`
+
+### Pages & navigation
+- **Tree navigation** — sidebar mirrors `docs/` folder structure, unlimited nesting, collapsible folders
+- **Folder aliases** — custom display names via `_meta.json`
+- **Anchor links** — TOC auto-generated from h2/h3; clicks update `location.hash`; deep links are shareable
+- **Recently modified** — empty state lists the 5 most recently changed pages by commit date
+- **Page history** — clock button opens the last 20 commits for the current page; click any to preview the rendered markdown at that SHA, with a "Restore this version" option
+- **Frontmatter** — `---` YAML blocks: `tags`, `author`, `description`. Tags render as clickable chips; clicking pre-fills search
+- **Print / PDF** — "Print" button in the content bar; `@media print` hides all chrome and renders clean print typography (11 pt, scaled headings, URL expansion after external links)
+- **Unsaved-changes guard** — `beforeunload` on tab close; confirmation dialog when navigating to another page while editing
+
+### Search
+- **Full-text search** — ⌘K / Ctrl+K; searches titles, excerpts, and full page content via `search.json`. Results deduplicated; full-text-only matches labelled "Full text"
+
+### Deploy & status
+- **Header status badge** — live GitHub Actions / GitLab CI status (queued → deploying → deployed / failed) with link to the run
+- **Per-file deploy indicator** — after saving, the file row in the sidebar shows `●` (pulsing, deploying), `✓` (green, 3.5 s then fades), or `✗` (red, CI failed). Multiple rapid saves correctly supersede each other
+
+### Settings & preferences
+- **Display preferences** — ⚙ settings include toggles for "Show TOC panel" and "Split preview while editing"; persisted to `localStorage`
+- **Password-protected editing** — SHA-256 hash in `config.json`; PAT XOR-encrypted with edit password in `localStorage`
+- **Multi-maintainer** — `config.json` is the shared source of truth; each editor supplies their own PAT
+
+### Infrastructure
+- **GitHub + GitLab support** — single codebase, provider switched via `config.json → provider`
+- **i18n** — `i18n/<lang>.json`; English and Russian included; missing keys fall back to key name
+- **Dark mode** — follows `prefers-color-scheme`; all colours are CSS variables
+- **Mobile** — sidebar collapses to hamburger; split-view collapses to editor-only on narrow screens
 - **Zero dependencies** — one CDN script (`marked.js`), vanilla JS, no framework, no npm
 
 ---
@@ -298,23 +318,27 @@ Dark mode variables are in the `@media (prefers-color-scheme: dark)` block in th
 
 ## Known limitations
 
-- **Search is excerpt-only** — indexes only the first ~140 characters of each page. Increase `[:140]` in `build-tree.yml` to index more, at the cost of a larger `tree.json`.
-- **No image upload UI** — images must be committed to the repository manually and referenced by path.
 - **Single branch** — WikiNest always reads from and writes to `main`. Branch-based workflows are not supported.
 - **No conflict resolution** — if two people edit the same page simultaneously, the second save will fail with a SHA mismatch error. Reload, re-apply changes, save again.
 - **PAT rotation** — when a PAT expires, each user must re-enter their token in the ⚙ settings.
-- **No offline support** — requires a live GitHub API connection.
+- **No offline support** — requires a live provider API connection.
+- **Non-atomic rename** — rename creates the new file then deletes the old one in two separate commits. If the DELETE fails, both paths exist briefly; the CI rebuild will correct the tree.
+- **GitLab SHA re-fetch** — after writing a file via the GitLab API, WikiNest performs a second GET to obtain the new `last_commit_id`, since the PUT/POST response does not include it.
 
 ---
 
 ## Roadmap
 
-- [ ] Image upload via drag-and-drop (commits image to `docs/assets/`)
-- [ ] Page history viewer (list of commits for a page, diff view)
+- [ ] Mermaid diagram support (CDN + `marked` extension)
+- [ ] Custom home page (`docs/home.md` auto-loaded on first visit)
+- [ ] Backlinks panel — "pages that link here" via `[[wiki links]]` index
+- [ ] Page staleness indicator — `review_date` frontmatter key + warning banner
+- [ ] Diff viewer in page history (line-by-line comparison between commits)
+- [ ] Frontmatter GUI — form UI for tags / author / description instead of raw YAML
+- [ ] Tags browser — dedicated view listing all tags and pages per tag
+- [ ] Find & Replace in editor (Ctrl+H)
 - [ ] Folder creation with `_meta.json` from the New Page dialog
-- [ ] Configurable accent color in the ⚙ UI
-- [ ] Optional full-content search index (no excerpt limit)
-- [ ] Issue templates and contributor guide
+- [ ] Configurable accent colour in the ⚙ UI
 
 ---
 
@@ -345,7 +369,7 @@ No build step required. Open `index.html` directly in a browser for local develo
 ## Troubleshooting
 
 **Sidebar empty after creating, editing, or renaming a page**
-GitHub Actions needs ~30–60 s to rebuild `tree.json`. The deploy status badge in the header tracks progress — wait for "Deployed" before reloading.
+The sidebar updates optimistically immediately after the operation. The CI badge in the header (and the `●` indicator on the file row) will show progress — wait for "Deployed" for full metadata (folder titles, tags, timestamps) to reflect.
 
 **"Could not load — check settings"**
 Verify `owner` and `repo` in `config.json` are correct. Check that GitHub Pages is enabled and the first deploy completed successfully.
