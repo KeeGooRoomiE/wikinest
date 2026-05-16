@@ -1,26 +1,76 @@
 [
   {
+    "path": "changelog",
+    "title": "Changelog",
+    "excerpt": "All notable changes to WikiNest are listed here in reverse chronological order.",
+    "parts": [
+      "changelog"
+    ],
+    "folder_titles": {},
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "meta"
+    ],
+    "author": ""
+  },
+  {
+    "path": "features",
+    "title": "Features",
+    "excerpt": "Complete reference for everything WikiNest can do. See also [[Markdown reference]] for Markdown syntax and [[Configuration]] for setup optio",
+    "parts": [
+      "features"
+    ],
+    "folder_titles": {},
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "reference",
+      "features"
+    ],
+    "author": "WikiNest Team"
+  },
+  {
+    "path": "home",
+    "title": "WikiNest",
+    "excerpt": "**Your team's knowledge base, version-controlled and always in sync.**",
+    "parts": [
+      "home"
+    ],
+    "folder_titles": {},
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [],
+    "author": ""
+  },
+  {
     "path": "index",
     "title": "Welcome to WikiNest",
-    "excerpt": "WikiNest is a lightweight wiki that lives entirely in your GitHub repository. No server, no build step, no dependencies beyond GitHub itself",
+    "excerpt": "WikiNest is a git-native wiki: your documentation lives in the `docs/` folder of a GitHub or GitLab repository. Every page is a Markdown fil",
     "parts": [
       "index"
     ],
     "folder_titles": {},
-    "updated_at": "2026-05-13T12:55:24+07:00"
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "overview"
+    ],
+    "author": ""
   },
   {
     "path": "example/example_page",
-    "title": "Example page",
-    "excerpt": "Start writing here.",
+    "title": "Feature Playground",
+    "excerpt": "This page demonstrates WikiNest-specific features in action. Everything you see here — the tags above, the author attribution, the links bel",
     "parts": [
       "example",
       "example_page"
     ],
     "folder_titles": {
-      "example": "Example"
+      "example": "Playground"
     },
-    "updated_at": "2026-05-13T23:30:48+07:00"
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "demo",
+      "playground"
+    ],
+    "author": "WikiNest Team"
   },
   {
     "path": "reference/folder-structure",
@@ -33,7 +83,9 @@
     "folder_titles": {
       "reference": "Reference"
     },
-    "updated_at": "2026-05-13T12:34:34+07:00"
+    "updated_at": "2026-05-13T12:34:34+07:00",
+    "tags": [],
+    "author": ""
   },
   {
     "path": "reference/i18n",
@@ -46,7 +98,9 @@
     "folder_titles": {
       "reference": "Reference"
     },
-    "updated_at": "2026-05-13T12:34:34+07:00"
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [],
+    "author": ""
   },
   {
     "path": "reference/markdown",
@@ -59,7 +113,9 @@
     "folder_titles": {
       "reference": "Reference"
     },
-    "updated_at": "2026-05-13T12:34:34+07:00"
+    "updated_at": "2026-05-13T12:34:34+07:00",
+    "tags": [],
+    "author": ""
   },
   {
     "path": "setup/configuration",
@@ -72,7 +128,27 @@
     "folder_titles": {
       "setup": "Setup & Installation"
     },
-    "updated_at": "2026-05-13T12:34:34+07:00"
+    "updated_at": "2026-05-13T12:34:34+07:00",
+    "tags": [],
+    "author": ""
+  },
+  {
+    "path": "setup/gitlab",
+    "title": "GitLab Setup",
+    "excerpt": "This guide walks through deploying WikiNest using GitLab as your backend. For GitHub, see [[Installation]].",
+    "parts": [
+      "setup",
+      "gitlab"
+    ],
+    "folder_titles": {
+      "setup": "Setup & Installation"
+    },
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "setup",
+      "gitlab"
+    ],
+    "author": ""
   },
   {
     "path": "setup/installation",
@@ -85,6 +161,44 @@
     "folder_titles": {
       "setup": "Setup & Installation"
     },
-    "updated_at": "2026-05-13T12:34:34+07:00"
+    "updated_at": "2026-05-13T12:34:34+07:00",
+    "tags": [],
+    "author": ""
+  },
+  {
+    "path": "team/meeting-notes",
+    "title": "Meeting Notes",
+    "excerpt": "Weekly engineering sync — notes kept in reverse chronological order. Add new entries at the top.",
+    "parts": [
+      "team",
+      "meeting-notes"
+    ],
+    "folder_titles": {
+      "team": "Team"
+    },
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "team",
+      "meetings"
+    ],
+    "author": "Team Lead"
+  },
+  {
+    "path": "team/runbook",
+    "title": "Revert (creates a new commit — safe for shared branches)",
+    "excerpt": "**Service:** WikiNest wiki",
+    "parts": [
+      "team",
+      "runbook"
+    ],
+    "folder_titles": {
+      "team": "Team"
+    },
+    "updated_at": "2026-05-16T22:08:16+07:00",
+    "tags": [
+      "ops",
+      "runbook"
+    ],
+    "author": "Ops Team"
   }
 ]
