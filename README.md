@@ -10,6 +10,8 @@ WikiNest is a git-native wiki for small engineering teams. Edit markdown in the 
 Browser ↔ Git provider API ↔ Git repository ↔ Pages
 ```
 
+
+
 ✓ Browser-based markdown editor ✓ Every edit becomes a commit ✓ Runs on GitHub or GitLab Pages — free forever ✓ No backend ✓ No database ✓ No build step ✓ Open `index.html` locally and the entire app works
 
 The entire frontend is one `index.html` and one `style.css`. No `npm install`. No `node_modules`. No framework runtime.
@@ -43,9 +45,13 @@ WikiNest treats Git as the storage layer instead of syncing with one later. Git 
 
 ## Demo
 
-> **Live demo:**[keegooroomie.github.io/wikinest](https://keegooroomie.github.io/wikinest)
+> **Live demo:** [keegooroomie.github.io/wikinest](https://keegooroomie.github.io/wikinest)
 
-<!-- Add GIF here: edit → drag image → Ctrl+S → deploy indicator → GitHub commit --> ---
+![WikiNest Preview](assets/repo/cover.png)
+
+<!-- Add GIF here: edit → drag image → Ctrl+S → deploy indicator → GitHub commit -->
+
+---
 
 ## Compare
 
