@@ -8,8 +8,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 ### Navigation
 
+- **Quick page creation from folder** — hovering any folder row reveals a `+` button alongside the pencil. Clicking it opens the New page dialog with the folder pre-selected. The New page dialog itself was redesigned: a folder dropdown (populated from the current tree) + a page-name input (validated to `[a-zA-Z0-9_\-]+`) + a live "Full path" preview that updates on every keystroke. The `+ New page` button in the sidebar still works identically, defaulting to the root folder
 - **Folder display-name rename** — hovering any folder row in the sidebar reveals a pencil button. Clicking it opens a modal with the current display name pre-filled. On save, WikiNest creates or updates `docs/<folder-path>/_meta.json` with `{ "title": "…" }` (1 API call, atomic). The actual folder path and page URLs do not change. The sidebar updates optimistically; CI rebuilds the authoritative tree after deploy
 - **Custom home page** — if `docs/home.md` exists in the tree, it is automatically opened on the first load instead of the empty state / recently-modified list. Create `docs/home.md` in any wiki to set a custom landing page; delete it to revert to the default empty state
+- **Relative image paths fixed** — `renderView()` now rewrites relative `src` attributes in rendered `<img>` tags to absolute raw-CDN URLs before inserting into the DOM. Paths are resolved against the current file's directory (e.g. `../../assets/img.png` from `docs/setup/page.md` → `docs/assets/img.png` → full raw URL). Paths that are already absolute (`https://`, `//`, `data:`, fragment `#`) are left unchanged. `resolveDocRelative(rel)` helper added
 
 ## [1.2.0] — 2026-05-16
 
