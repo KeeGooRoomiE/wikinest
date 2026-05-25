@@ -706,19 +706,30 @@ function tocClick(id){
 }
 
 // ── Markdown toolbar formatting ──
+// Use execCommand('insertText') so every toolbar action is a single undo step.
+// setRangeText() bypasses the browser's input pipeline and breaks Ctrl+Z on
+// many browsers; execCommand preserves the native undo/redo stack.
+function taInsert(ta,text,start,end){
+  ta.focus();
+  ta.setSelectionRange(start,end);
+  if(!document.execCommand('insertText',false,text)){
+    // Fallback for environments where execCommand is unavailable
+    ta.setRangeText(text,start,end,'end');
+  }
+}
+
 function fmt(before,after,placeholder){
   const ta=$('editor');
   const s=ta.selectionStart,e=ta.selectionEnd;
   const hasSel=s!==e;
   const sel=hasSel?ta.value.slice(s,e):placeholder;
   const ins=before+sel+after;
-  ta.setRangeText(ins,s,e,'end');
+  taInsert(ta,ins,s,e);
   if(!hasSel&&placeholder){
     ta.selectionStart=s+before.length;
     ta.selectionEnd=s+before.length+placeholder.length;
   }
   ta.dispatchEvent(new Event('input'));
-  ta.focus();
 }
 
 function fmtLine(prefix){
@@ -729,9 +740,8 @@ function fmtLine(prefix){
   const end=lineEnd===-1?ta.value.length:lineEnd;
   const line=ta.value.slice(lineStart,end);
   const newLine=line.startsWith(prefix)?line.slice(prefix.length):prefix+line;
-  ta.setRangeText(newLine,lineStart,end,'end');
+  taInsert(ta,newLine,lineStart,end);
   ta.dispatchEvent(new Event('input'));
-  ta.focus();
 }
 
 function fmtTable(){
@@ -773,7 +783,7 @@ function initDragDrop(){
         const ta=$('editor');
         const pos=ta.selectionStart;
         const ins=`![${safeName}](${url})`;
-        ta.setRangeText(ins,pos,pos,'end');
+        taInsert(ta,ins,pos,pos);
         ta.dispatchEvent(new Event('input'));
         toast(t('image_uploaded'));
       }catch(err){toast(`Upload failed: ${err.message}`);}
@@ -1264,10 +1274,9 @@ function insertWikiLink(title){
   const m=before.match(/\[\[([^\]]*)$/);
   if(!m) return;
   const start=pos-m[0].length;
-  ta.setRangeText(`[[${title}]]`,start,pos,'end');
+  taInsert(ta,`[[${title}]]`,start,pos);
   ta.dispatchEvent(new Event('input'));
   hideWikiComplete();
-  ta.focus();
 }
 
 function initWikiAutocomplete(){

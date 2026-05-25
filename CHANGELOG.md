@@ -10,6 +10,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 - **Deep-link / direct URL support** — `404.html` added to the repo root. GitHub Pages and GitLab Pages serve it when a path like `site.github.io/repo/setup/installation` has no matching file; the script encodes the requested path as `?p=` and redirects to `index.html`. On startup `init()` reads `?p=`, stores it in `_pendingUrlPage`, and `loadTree()` resolves it to a page after the tree loads. `openPage()` now also calls `history.replaceState` after each successful navigation so the address bar always reflects the current page — making URLs copy-pasteable and shareable. `pathSegmentsToKeep = 1` in `404.html` (change to `0` for custom domains / user-pages). GitLab CI updated to copy `404.html` into `public/`
 
+### Bug fixes
+
+- **Ctrl+Z / Ctrl+Y broken in editor** — all toolbar buttons (`fmt()`, `fmtLine()`), drag-and-drop image upload, and wiki-link autocomplete insertion used `setRangeText()` which bypasses the browser's input pipeline and destroys the native undo/redo stack. Replaced with `document.execCommand('insertText')` via a shared `taInsert()` helper; `setRangeText` is kept as a silent fallback only. Undo and redo now work correctly after every toolbar action
+
 ## [1.3.0] — 2026-05-22
 
 ### Navigation
