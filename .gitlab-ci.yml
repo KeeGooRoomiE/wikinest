@@ -87,7 +87,7 @@ pages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - mkdir -p public
-    - cp index.html style.css config.json tree.json public/
+    - cp index.html style.css config.json tree.json 404.html public/
     - cp -r i18n public/
     - cp -r docs public/
     - "[ -f favicon.ico ] && cp favicon.ico public/ || true"

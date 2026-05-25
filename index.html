@@ -173,6 +173,11 @@ let _pendingRestoreContent=null;
 // ── Pending folder path for folder-rename modal ──
 let _pendingFolderPath=null;
 
+// ── Deep-link routing ──
+// _pendingUrlPage: page path read from ?p= on startup (set by 404.html redirect)
+// _basePath: repo root prefix in the URL, e.g. '/wikinest' or '' for custom domains
+let _pendingUrlPage=null,_basePath='';
+
 // ── Deploy watcher ──
 let pollTimer=null,watchingRunId=null,watchDeployGen=0;
 
@@ -286,6 +291,14 @@ function parseFrontmatter(md){
 
 async function init(){
   loadDisplayPrefs();
+  // Base path = pathname root of this page (e.g. '/wikinest' for project pages, '' for root)
+  _basePath=location.pathname.replace(/\/$/, '').replace(/\/[^/]*\.[^/]*$/, '');
+  // Handle incoming deep link from 404.html redirect (?p=some/page)
+  const _urlParam=new URLSearchParams(location.search).get('p');
+  if(_urlParam){
+    _pendingUrlPage=decodeURIComponent(_urlParam).replace(/^\/+|\.md$/g,'');
+    history.replaceState(null,'',location.pathname); // strip ?p= immediately
+  }
   // 1. load config.json from repo — source of truth for owner/repo/site_name/password hash
   try{
     const r=await fetch('config.json',{cache:'no-cache'});
@@ -498,6 +511,11 @@ async function loadTree(){
     tree=await r.json();
     renderTree(tree);
     if(!currentPath){
+      if(_pendingUrlPage){
+        const targetPage=tree.find(p=>p.path.toLowerCase()===_pendingUrlPage.toLowerCase());
+        _pendingUrlPage=null;
+        if(targetPage){openPage(targetPage);return;}
+      }
       const homePage=tree.find(p=>p.path==='home');
       if(homePage) openPage(homePage);
       else showEmpty();
@@ -614,6 +632,9 @@ async function openPage(page){
     if(!r.ok) throw new Error(r.statusText);
     const md=await r.text();
     if(currentPath!==targetPath) return; // user navigated away before fetch completed
+    // Update the address bar so users can copy a shareable direct link.
+    // On next open the URL goes through 404.html → index.html?p= → openPage().
+    history.replaceState(null,'',_basePath+'/'+page.path);
     currentSha=null;
     renderView(md);
   }catch(e){
