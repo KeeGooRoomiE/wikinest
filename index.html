@@ -327,9 +327,24 @@ async function init(){
   } else showSetupBanner();
 
   document.addEventListener('keydown',e=>{
+    const inEditor=$('editor-wrap').classList.contains('edit-active');
+    const modalOpen=$('modal-overlay').classList.contains('open');
     if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}
-    if((e.metaKey||e.ctrlKey)&&e.key==='s'&&$('editor-wrap').classList.contains('edit-active')){e.preventDefault();savePage();}
-    if(e.key==='Escape'){closeSearch();closeModal();hideWikiComplete();}
+    if((e.metaKey||e.ctrlKey)&&e.key==='s'&&inEditor){e.preventDefault();savePage();}
+    // Ctrl/Cmd+E — open editor (only when viewing, not already editing)
+    if((e.metaKey||e.ctrlKey)&&e.key==='e'&&!inEditor&&currentPath&&!modalOpen){e.preventDefault();startEdit();}
+    // Ctrl/Cmd+Enter — confirm the primary action of an open modal
+    if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&modalOpen){
+      e.preventDefault();
+      const primary=$('modal-actions').querySelector('.btn-primary');
+      if(primary) primary.click();
+    }
+    if(e.key==='Escape'){
+      closeSearch();
+      hideWikiComplete();
+      if(modalOpen) closeModal();
+      else if(inEditor) cancelEdit();
+    }
   });
   window.addEventListener('beforeunload',e=>{
     if(editorDirty){e.preventDefault();e.returnValue='';}
@@ -1502,7 +1517,37 @@ async function watchDeploy(savedPath){
   setTimeout(()=>waitForNewRun(),5000);
 }
 
+// ── Editor keyboard shortcuts (Tab indent, Ctrl+B/I) ──
+function initEditorShortcuts(){
+  const ta=$('editor');
+  if(!ta) return;
+  ta.addEventListener('keydown',e=>{
+    if(!$('editor-wrap').classList.contains('edit-active')) return;
+    // Tab → insert 2 spaces (prevent focus shift)
+    if(e.key==='Tab'&&!e.metaKey&&!e.ctrlKey&&!e.altKey){
+      e.preventDefault();
+      const s=ta.selectionStart,end=ta.selectionEnd;
+      taInsert(ta,'  ',s,end);
+      ta.dispatchEvent(new Event('input'));
+      return;
+    }
+    // Ctrl/Cmd+B → Bold
+    if((e.metaKey||e.ctrlKey)&&e.key==='b'){
+      e.preventDefault();
+      fmt('**','**','bold text');
+      return;
+    }
+    // Ctrl/Cmd+I → Italic
+    if((e.metaKey||e.ctrlKey)&&e.key==='i'){
+      e.preventDefault();
+      fmt('_','_','italic text');
+      return;
+    }
+  });
+}
+
 // Initialize wiki autocomplete after DOM ready
+initEditorShortcuts();
 initWikiAutocomplete();
 
 init();

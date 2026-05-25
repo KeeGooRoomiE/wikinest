@@ -10,6 +10,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 - **Deep-link / direct URL support** — `404.html` added to the repo root. GitHub Pages and GitLab Pages serve it when a path like `site.github.io/repo/setup/installation` has no matching file; the script encodes the requested path as `?p=` and redirects to `index.html`. On startup `init()` reads `?p=`, stores it in `_pendingUrlPage`, and `loadTree()` resolves it to a page after the tree loads. `openPage()` now also calls `history.replaceState` after each successful navigation so the address bar always reflects the current page — making URLs copy-pasteable and shareable. `pathSegmentsToKeep = 1` in `404.html` (change to `0` for custom domains / user-pages). GitLab CI updated to copy `404.html` into `public/`
 
+### Editor
+
+- **Keyboard shortcuts** — new shortcuts in the editor: **Tab** inserts 2 spaces instead of shifting focus (standard indent behaviour); **Ctrl/Cmd+B** applies Bold; **Ctrl/Cmd+I** applies Italic. All three are implemented in `initEditorShortcuts()` as a textarea `keydown` listener that only fires while edit mode is active
+
+### Navigation
+
+- **Ctrl/Cmd+E** — opens the editor for the current page from view mode (equivalent to clicking the Edit button); no-op when already editing or no page is open
+- **Ctrl/Cmd+Enter** — confirms the primary action of any open modal (Create, Save, Rename, Restore version); equivalent to clicking the highlighted button
+- **Escape** — behaviour is now context-aware: closes search / wiki autocomplete / modal as before; if no overlay is open and the editor is active, cancels editing (equivalent to Cancel button)
+
 ### Bug fixes
 
 - **Ctrl+Z / Ctrl+Y broken in editor** — all toolbar buttons (`fmt()`, `fmtLine()`), drag-and-drop image upload, and wiki-link autocomplete insertion used `setRangeText()` which bypasses the browser's input pipeline and destroys the native undo/redo stack. Replaced with `document.execCommand('insertText')` via a shared `taInsert()` helper; `setRangeText` is kept as a silent fallback only. Undo and redo now work correctly after every toolbar action
