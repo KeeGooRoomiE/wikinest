@@ -249,6 +249,25 @@ Git already solved the hard parts. WikiNest simply builds a wiki on top of it.
 
 ---
 
+## WikiNest Standalone — Enterprise edition
+
+Need more than a shared password, a GitHub dependency, or a public Pages URL?
+
+**WikiNest Standalone** is an enterprise version with a Python backend deployed on your own server:
+
+* **Own infrastructure** — Docker Compose on your VM, data never leaves your network
+* **Server-side RBAC** — roles and per-document permissions, not a browser-side password
+* **AI assistant** — RAG over your entire knowledge base, access-filtered before the LLM call
+* **Telegram integration** — invite keys, user management, no email/SSO setup required
+* **Instant saves** — direct disk write, no CI pipeline wait
+* **Word import** — `.docx` → Markdown in one API call
+
+Same editing experience. Same git-as-storage principle. No database, no Kubernetes.
+
+→ Contact [@KeeGooRoomiE](https://github.com/KeeGooRoomiE) to discuss setup and licensing.
+
+---
+
 ## License
 
-[MIT](https://claude.ai/chat/LICENSE) — © 2026 Alexander Gusarov ([@KeeGooRoomiE](https://github.com/KeeGooRoomiE))
+[MIT](LICENSE) — © 2026 Alexander Gusarov ([@KeeGooRoomiE](https://github.com/KeeGooRoomiE))
