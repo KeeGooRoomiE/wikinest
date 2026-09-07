@@ -55,6 +55,18 @@
     "author": ""
   },
   {
+    "path": "standalone",
+    "title": "WikiNest Standalone",
+    "excerpt": "---",
+    "parts": [
+      "standalone"
+    ],
+    "folder_titles": {},
+    "updated_at": "2026-09-07T11:48:57+07:00",
+    "tags": [],
+    "author": ""
+  },
+  {
     "path": "example/example_page",
     "title": "Feature Playground",
     "excerpt": "This page demonstrates WikiNest-specific features in action. Everything you see here — the tags above, the author attribution, the links bel",
